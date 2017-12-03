@@ -6,39 +6,34 @@ pub enum Direction {
     Down
 }
 
+#[derive(Clone, Copy)]
 pub struct SpiralMemoryCase {
 
-    x: i32,
-    y: i32,
-    dir: Direction,
-    items_left_on_line: i32,
-    current_items_on_line: i32,
-    is_second_line: bool,
+    pub x: i32,
+    pub y: i32,
+    pub value: i64,
+
+}
+
+pub struct SpiralMemoryCaseSequence {
+
+    pub x: i32,
+    pub y: i32,
+    pub dir: Direction,
+    pub items_left_on_line: i32,
+    pub current_items_on_line: i32,
+    pub is_second_line: bool,
+    pub registered_cases: Vec<SpiralMemoryCase>,
 
 }
 
 impl SpiralMemoryCase {
 
-    /// Returns a new SpiralMemoryCase sequence generator
-    pub fn new_seq_generator() -> Self {
-        SpiralMemoryCase {
-            x: 0,
-            y: 0,
-            dir: Direction::Right,
-            current_items_on_line: 1,
-            items_left_on_line: 1, 
-            is_second_line: false,
-        }
-    }
-
-    pub fn new(pos_x: i32, pos_y: i32, direction: Direction, current_items: i32, items_left: i32, is_second: bool) -> Self {
+    pub fn new(pos_x: i32, pos_y: i32, val: i64) -> Self {
         SpiralMemoryCase {
             x: pos_x,
             y: pos_y,
-            dir: direction,
-            current_items_on_line: current_items,
-            items_left_on_line: items_left,
-            is_second_line: is_second,
+            value: val,
         }
     }
 
@@ -46,26 +41,67 @@ impl SpiralMemoryCase {
     {
         self.x.abs() + self.y.abs() 
     }
+
+    pub fn compute_value(&mut self, list: &Vec<SpiralMemoryCase>)
+    {
+        self.value = 
+        list
+            .iter()
+            .filter(|a| 
+                a.x >= self.x-1 
+            &&  a.x <= self.x+1 
+            &&  a.y >= self.y-1 
+            &&  a.y <= self.y+1 
+            && !(a.x == self.x && a.y == self.y)
+            )
+            .map(|a| a.value)
+            .sum();  
+
+        if self.value == 0 { self.value = 1; }
+        
+        /* Enable this to see when the value is above the required input
+        if self.value >= 347991
+        {
+            println!("value above puzzle input {}", self.value);
+        }*/
+    }
+}
+
+impl SpiralMemoryCaseSequence {
+
+    /// Returns a new SpiralMemoryCase sequence generator
+    pub fn new() -> Self {
+        SpiralMemoryCaseSequence {
+            x: -1,
+            y: 0,
+            dir: Direction::Right,
+            current_items_on_line: 2,
+            items_left_on_line: 1, 
+            is_second_line: false,
+            registered_cases: Vec::new(),
+        }
+    }
 }
 
 
-impl Iterator for SpiralMemoryCase {
+impl Iterator for SpiralMemoryCaseSequence {
     type Item = SpiralMemoryCase;
 
     fn next(&mut self) -> Option<SpiralMemoryCase>
     {
-         
         // Calculates new coordinates
-        let mut pos_x: i32 = 0;
-        let mut pos_y: i32 = 0;
+        let pos_x: i32 = match self.dir {
+            Direction::Right => self.x + 1,
+            Direction::Left => self.x - 1,
+            _ => self.x,
+        };
 
-        // Sets the new X and Y coordinates using direction
-        match self.dir {
-            Direction::Right => pos_x = self.x + 1,
-            Direction::Up => pos_y = self.y + 1,
-            Direction::Left => pos_x = self.x - 1,
-            Direction::Down => pos_y = self.y - 1,
-        }
+        let pos_y: i32 = match self.dir {
+            Direction::Up => self.y + 1,
+            Direction::Down => self.y - 1,
+            _ => self.y,
+        };
+
 
         // Sets the new direction
         let mut direction: Direction = self.dir.clone();
@@ -77,10 +113,10 @@ impl Iterator for SpiralMemoryCase {
         let mut items_left: i32 = self.items_left_on_line.clone();
 
         // Sets the new current_items_on_line :
-        let current_items: i32 = self.current_items_on_line - 1;
+        let mut current_items: i32 = self.current_items_on_line - 1;
 
         // if current line will overflow when taking the next item
-        if current_items <= 0 
+        if current_items == 0 
         { 
             // Rotates the direction by -90°
             direction = match direction
@@ -101,16 +137,25 @@ impl Iterator for SpiralMemoryCase {
                 // if not, then we set it to true so the next line will change its items_left counter
                 is_second = true;
             }
+            
+            current_items = items_left;
         }
         
-        let new_item = SpiralMemoryCase::new(
+        let mut new_item = SpiralMemoryCase::new(
             pos_x,
             pos_y,
-            direction,
-            current_items,
-            items_left,
-            is_second
+            1,
         );
+
+        self.x = pos_x;
+        self.y = pos_y;
+        self.dir = direction;
+        self.current_items_on_line = current_items;
+        self.items_left_on_line = items_left;
+        self.is_second_line = is_second;
+
+        new_item.compute_value(&self.registered_cases);
+        self.registered_cases.push(new_item.clone());
 
         Some(new_item)
     }
