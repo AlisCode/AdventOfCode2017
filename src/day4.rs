@@ -24,30 +24,30 @@ pub fn is_passphrase_ok_second(input: &str) -> bool {
     
 	// Gets all word's hashes in a list
 	let mut list: Vec<i32> =
-    		input
-        	.split_whitespace()
-        	.map(|a| prime_sum(a))
-        	.collect();
-        
+    input
+    	.split_whitespace()
+    	.map(|a| prime_sum(a))
+    	.collect();
+	
 	// Same as part 1 :)
-    	let len: usize = list.len();
-
-    	list.sort();
-    	list.dedup();
+    let len: usize = list.len();
+    
+	list.sort();
+    list.dedup();
     
 	// Return the passphrase's "validity"
-    	len == list.len()
+    len == list.len()
 }
 
 /// Calculates the prime hash for a given word
 pub fn prime_sum(input: &str) -> i32 {
 
 	// Stores the 26 first primes so we can map each char to its prime number
-    	let primes = vec!(2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97, 101);
+    let primes = vec!(2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97, 101);
 
 	// For each char, multiply its ASCII value (char as u8 or u16 in this case) 
 	// by the corresponding prime in the primes array 
-    	// then sum all the chars up, we then get the hash of the word's letters 
+    // then sum all the chars up, we then get the hash of the word's letters 
 	input
 	    .chars()
 	    .map(|a| (((a as u16) * primes[((a as u16) - 97) as usize])) as i32)
