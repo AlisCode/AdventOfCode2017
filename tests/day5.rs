@@ -1,6 +1,7 @@
 extern crate advent_of_code_2017;
 
 use advent_of_code_2017::day5::count_steps_first;
+use advent_of_code_2017::day5::count_steps_second;
 
 #[test]
 fn test_day5_count_steps_first_sample1() {

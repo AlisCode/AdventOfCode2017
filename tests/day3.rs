@@ -1,8 +1,6 @@
 extern crate advent_of_code_2017;
 
-use advent_of_code_2017::day3::SpiralMemoryCase;
 use advent_of_code_2017::day3::SpiralMemoryCaseSequence;
-
 
 #[test]
 fn test_day3_manhattan_sample1() {
@@ -29,18 +27,6 @@ fn test_day3_manhattan_sample3() {
         .unwrap();
     assert_eq!(item.get_manhattan_distance(), 2);
 }
-
-/* Removed this test, because we can't compute a case's value for an index that high ...
-#[test]
-fn test_day3_manhattan_sample4() {
-    let index: usize = 1024;
-    let item = SpiralMemoryCaseSequence::new()
-        .skip(index - 1)
-        .next()
-        .unwrap();
-    assert_eq!(item.get_manhattan_distance(), 31);
-}
-*/
 
 #[test]
 fn test_day3_value_sample1() {
