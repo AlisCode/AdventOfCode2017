@@ -37,9 +37,9 @@ pub fn count_steps_first(input: &str) -> i32 {
             _ => return counted_steps,
         }
     }
-    // Won't compile without this, since this function needs to return an i32.
-    // Basically, this is unreachable code ^^
-    0
+    
+    // We should never get out of the for loop
+    unreachable!()
 }
 
 /// Resolves the second part for the given input
@@ -76,6 +76,7 @@ pub fn count_steps_second(input: &str) -> i32 {
             _ => return counted_steps,
         }
     }
-    // Same as before :)
-    0
+
+    // We should never get out of the for loop
+    unreachable!()
 }
