@@ -1,41 +1,45 @@
-pub struct HexaPath {
-    nw_count: i32,
-    n_count: i32,
-    ne_count: i32,
-    sw_count: i32,
-    s_count: i32,
-    se_count: i32,
+pub struct HexaCase {
+    x: i32,
+    y: i32,
+    z: i32,
+    furthest: i32,
 }
 
-impl HexaPath {
+impl HexaCase {
     pub fn new() -> Self {
-        HexaPath {
-            nw_count: 0,
-            n_count: 0,
-            ne_count: 0,
-            sw_count: 0,
-            s_count: 0,
-            se_count: 0,
+        HexaCase {
+            x: 0,
+            y: 0,
+            z: 0,
+            furthest: 0,
         }
     }
 
-    pub fn populate(&mut self, input: &str) {
-        input.split(",").for_each(|a| match a {
-            "nw" => self.nw_count += 1,
-            "n" => self.n_count += 1,
-            "ne" => self.ne_count += 1,
-            "sw" => self.sw_count += 1,
-            "s" => self.s_count += 1,
-            "se" => self.se_count += 1,
+    pub fn follow_path(&mut self, input: &str) {
+        input.split(",").for_each(|a| { match a {
+            "nw" => { self.y += 1; self.x -= 1;},
+            "n" => { self.y += 1; self.z -= 1;},
+            "ne" => { self.x += 1; self.z -= 1;},
+            "sw" => { self.z += 1; self.x -= 1;},
+            "s" => { self.z += 1; self.y -= 1;},
+            "se" => { self.x += 1; self.y -= 1;},
             _ => unreachable!(),
+        };
+
+        let steps: i32 = self.get_steps();
+        if self.furthest < steps { self.furthest = steps; }
+
         });
     }
 
     pub fn get_steps(&self) -> i32 {
-        let east_count: i32 = self.ne_count - self.sw_count;
-        let west_count: i32 = self.nw_count - self.se_count;
-        let center_count: i32 = self.n_count - self.s_count;
 
-        east_count.abs() + west_count.abs() + center_count.abs()
+        let vec_compare: Vec<i32> = vec!(self.x, self.y, self.z);
+        vec_compare.into_iter().max().unwrap()
+
     }
+
+    pub fn get_furthest(&self) -> i32 {
+        self.furthest
+    } 
 }
