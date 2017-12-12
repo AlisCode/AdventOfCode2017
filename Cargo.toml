@@ -4,3 +4,10 @@ version = "0.1.0"
 authors = ["Olivier Pinon <opinon@asylum.fr>"]
 
 [dependencies]
+# WORKSPACES
+day12_parser = { path = "day12_parser" }
+
+# OTHER DEPS
+petgraph = "*"
+
+[workspace]

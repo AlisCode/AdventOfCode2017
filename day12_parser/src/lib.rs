@@ -5,8 +5,8 @@ use nom::{digit, space};
 use std::str;
 
 pub struct Program {
-    id: i32,
-    linked_programs: Vec<i32>,
+    pub id: i32,
+    pub linked_programs: Vec<i32>,
 }
 
 impl Program {
@@ -23,18 +23,13 @@ impl Program {
 named!(number<i32>, 
     map_res!(
         map_res!(
-            recognize!(
-                pair!(
-                    opt!(tag!("-")),
-                    digit
-                )
-            ), str::from_utf8
+            digit , str::from_utf8
         ), str::parse
     )
 );
 
 named!(get_linked_ids<Vec<i32>>, 
-    separated_list_complete!(number, tag!(", "))
+    separated_list_complete!(tag!(", "), number)
 );
 
 
@@ -48,9 +43,10 @@ named!(parse_whole_line<(i32, Vec<i32>)>, do_parse!(
 ));
 
 pub fn parse_input(input: &str) -> Vec<Program> {
-    Vec::new()
+    input.lines().filter_map(|a| parse_line(a).ok()).collect()
 }
 
 pub fn parse_line(input: &str) -> Result<Program, nom::ErrorKind> {
-    Ok(Program::new(0,Vec::new()))
+    let (id, vec_ids) = parse_whole_line(input.as_bytes()).to_result()?;
+    Ok(Program::new(id,vec_ids))
 }
