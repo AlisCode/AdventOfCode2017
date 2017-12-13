@@ -46,18 +46,15 @@ pub fn get_path_severity(firewall: &Vec<FirewallBlock>) -> i32 {
 }
 
 fn check_if_get_caught(firewall: &Vec<FirewallBlock>, delay: i32) -> bool {
-    let res: i32 = 
-    firewall
-    .iter()
-    .map(|a: &FirewallBlock| if a.catches_packet_at(a.depth + delay) { 1 } else { 0 })
-    .sum();
-
-    res == 0
+    for item in firewall {
+        if item.catches_packet_at(item.depth + delay) { return true; }
+    }
+    return false;
 }
 
 pub fn get_min_delay(firewall: &Vec<FirewallBlock>) -> i32 {
     for i in 0.. {
-        if check_if_get_caught(firewall, i) { return i; }
+        if !check_if_get_caught(firewall, i) { return i; }
     }
     unreachable!();
 }
