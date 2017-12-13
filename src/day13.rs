@@ -74,7 +74,6 @@ pub fn get_path_severity(hash_map: &mut HashMap<i32, FirewallBlock>, max_depth: 
     let mut global_severity: i32 = 0;
     let mut to_delay: i32 = delay.clone();
     let mut got_caught: bool = false;
-    let mut _i: i32 = 0;
 
     for _ in 0.. {
         if to_delay > 0 {
@@ -86,7 +85,7 @@ pub fn get_path_severity(hash_map: &mut HashMap<i32, FirewallBlock>, max_depth: 
                     global_severity += block.get_severity();
                     got_caught = true;
                 },
-                None => _i += 1,
+                None => (),
             }
             if curr_index == max_depth {
                 return (global_severity, got_caught);
@@ -100,14 +99,12 @@ pub fn get_path_severity(hash_map: &mut HashMap<i32, FirewallBlock>, max_depth: 
 }
 
 pub fn get_min_delay(hash_map: &mut HashMap<i32, FirewallBlock>, max_depth: i32) -> i32 {
-    for i in 1.. {
+    for i in 3896402.. {
+        println!("{}", i);
         let mut copied_hash = hash_map.clone();
         let (sev, got_caught) = get_path_severity(&mut copied_hash, max_depth, i);
         if !got_caught {
             return i;
-        }
-        else {
-            println!("{} Got caught: {}", i, sev);
         }
     }
 
