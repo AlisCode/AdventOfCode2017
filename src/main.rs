@@ -1,6 +1,8 @@
 extern crate advent_of_code_2017;
+extern crate time;
 
 use advent_of_code_2017::day13::{generate_firewall, get_min_delay};
+use time::precise_time_ns;
 
 fn main() {
     let input: &str = "0: 3
@@ -47,13 +49,15 @@ fn main() {
 86: 14
 94: 14";
 
-    /*let input: &str = "0: 3
-1: 2
-4: 4
-6: 4";*/
+    let firewall = generate_firewall(input);
 
-    let (mut hash_map, max_depth) = generate_firewall(input);
-    let res = get_min_delay(&mut hash_map, max_depth);
+    let start_time = precise_time_ns();
+    let res = get_min_delay(&firewall);
+    let end_time = precise_time_ns();
+
+    let time_ns: u64 = end_time - start_time;
+    let time_s: f64 = (time_ns as f64 / 1_000_000_000f64) as f64;
 
     println!("Result: {}", res);
+    println!("in {} seconds", time_s);
 }

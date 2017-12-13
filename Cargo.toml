@@ -9,5 +9,6 @@ day12_parser = { path = "day12_parser" }
 
 # OTHER DEPS
 petgraph = "*"
+time = "*"
 
 [workspace]
