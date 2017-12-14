@@ -34,19 +34,14 @@ pub fn count_used_cells(grid: &Vec<Vec<i32>>) -> i32 {
         .sum()
 }
 
-pub fn count_groups(grid: &Vec<Vec<i32>>) -> i32 {
+pub fn count_groups(grid: &mut Vec<Vec<i32>>) -> i32 {
     let mut nb_groups: i32 = 0;
 
     for i in 0..128 {
         for j in 0..128 {
-            if get_case(grid, i, j) == 1 {
-                if !(get_case(grid, i as i32 - 1, j as i32) == 1
-                    || get_case(grid, i as i32 + 1, j as i32) == 1
-                    || get_case(grid, i as i32, j as i32 - 1) == 1
-                    || get_case(grid, i as i32, j as i32 + 1) == 1)
-                {
-                    nb_groups += 1;
-                }
+            if grid[i][j] == 1 {
+                recursive_check_neighbors(grid, i, j);
+                nb_groups += 1;
             }
         }
     }
@@ -54,9 +49,16 @@ pub fn count_groups(grid: &Vec<Vec<i32>>) -> i32 {
     nb_groups
 }
 
-fn get_case(grid: &Vec<Vec<i32>>, x: i32, y: i32) -> i32 {
-    if x < 0 || x >= 128 || y < 0 || y >= 128 {
-        return 0;
-    }
-    grid[x as usize][y as usize]
-}
+fn recursive_check_neighbors(grid: &mut Vec<Vec<i32>>, x: usize, y: usize)
+{  
+    grid[x][y] = 0;
+    if x <= 126 && grid[x+1][y] == 1 { recursive_check_neighbors(grid, x+1, y); }
+    if y <= 126 && grid[x][y+1] == 1 { recursive_check_neighbors(grid, x, y+1); }
+    if x >= 1 && grid[x-1][y] == 1 { recursive_check_neighbors(grid, x-1, y); }
+    if y >= 1 && grid[x][y-1] == 1 { recursive_check_neighbors(grid, x, y-1); }
+    
+    if x <= 126 { grid[x+1][y] = 0; }
+    if y <= 126 { grid[x][y+1] = 0; }
+    if x >= 1 { grid[x-1][y] = 0; }
+    if y >= 1 { grid[x][y-1] = 0; }
+} 
