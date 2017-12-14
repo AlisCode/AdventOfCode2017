@@ -5,6 +5,7 @@ authors = ["Olivier Pinon <opinon@asylum.fr>"]
 
 [dependencies]
 # WORKSPACES
+day7_parser = { path = "day7_parser" }
 day12_parser = { path = "day12_parser" }
 
 # OTHER DEPS

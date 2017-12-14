@@ -1,27 +1,10 @@
-pub struct Process<'a> {
-    name: &'a str,
-    weight: i32,
-    children_names: Vec<&'a str>,
-    children_process: Vec<&'a Process<'a>>,
-    parent: Option<&'a Process<'a>>,
-}
+extern crate day7_parser;
 
-impl<'a> Process<'a> {
-    pub fn new(input: &'a str) -> Self {
+use day7_parser::Process;
 
-        Process {
-            name: "test",
-            weight: 1,
-            children_names: Vec::new(),
-            children_process: Vec::new(),
-            parent: None,
-        }
-    }
-
-    pub fn get_root_process(&self) -> &'a str {
-        match self.parent {
-            Some(parent) => parent.get_root_process(),
-            _ => self.name,
-        }
+pub fn get_root_process<'a>(process: &'a Process) -> &'a str {
+    match process.parent {
+        Some(parent) => get_root_process(&parent),
+        _ => process.name,
     }
 }

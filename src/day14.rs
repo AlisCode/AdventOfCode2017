@@ -49,16 +49,31 @@ pub fn count_groups(grid: &mut Vec<Vec<i32>>) -> i32 {
     nb_groups
 }
 
-fn recursive_check_neighbors(grid: &mut Vec<Vec<i32>>, x: usize, y: usize)
-{  
+fn recursive_check_neighbors(grid: &mut Vec<Vec<i32>>, x: usize, y: usize) {
     grid[x][y] = 0;
-    if x <= 126 && grid[x+1][y] == 1 { recursive_check_neighbors(grid, x+1, y); }
-    if y <= 126 && grid[x][y+1] == 1 { recursive_check_neighbors(grid, x, y+1); }
-    if x >= 1 && grid[x-1][y] == 1 { recursive_check_neighbors(grid, x-1, y); }
-    if y >= 1 && grid[x][y-1] == 1 { recursive_check_neighbors(grid, x, y-1); }
-    
-    if x <= 126 { grid[x+1][y] = 0; }
-    if y <= 126 { grid[x][y+1] = 0; }
-    if x >= 1 { grid[x-1][y] = 0; }
-    if y >= 1 { grid[x][y-1] = 0; }
-} 
+    if x <= 126 && grid[x + 1][y] == 1 {
+        recursive_check_neighbors(grid, x + 1, y);
+    }
+    if y <= 126 && grid[x][y + 1] == 1 {
+        recursive_check_neighbors(grid, x, y + 1);
+    }
+    if x >= 1 && grid[x - 1][y] == 1 {
+        recursive_check_neighbors(grid, x - 1, y);
+    }
+    if y >= 1 && grid[x][y - 1] == 1 {
+        recursive_check_neighbors(grid, x, y - 1);
+    }
+
+    if x <= 126 {
+        grid[x + 1][y] = 0;
+    }
+    if y <= 126 {
+        grid[x][y + 1] = 0;
+    }
+    if x >= 1 {
+        grid[x - 1][y] = 0;
+    }
+    if y >= 1 {
+        grid[x][y - 1] = 0;
+    }
+}
