@@ -29,6 +29,11 @@ impl KnotHasher {
         input_suffixed.push(47);
         input_suffixed.push(23);
 
+        // Resets the list, current_position and skip_size
+        self.current_position = 0;
+        self.skip_size = 0;
+        self.list = (0..256).collect();
+
         // Do the knotting on the suffixed input stream. 64 rounds.
         for _ in 1..65 {
             input_suffixed.iter().for_each(|a| {
