@@ -7,6 +7,7 @@ authors = ["Olivier Pinon <opinon@asylum.fr>"]
 # WORKSPACES
 day7_parser = { path = "day7_parser" }
 day12_parser = { path = "day12_parser" }
+day16_parser = { path = "day16_parser" }
 
 # OTHER DEPS
 petgraph = "*"

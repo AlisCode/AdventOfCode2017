@@ -1,10 +1,17 @@
 extern crate day7_parser;
+extern crate petgraph;
 
 use day7_parser::Process;
 
-pub fn get_root_process<'a>(process: &'a Process) -> &'a str {
-    match process.parent {
-        Some(parent) => get_root_process(&parent),
-        _ => process.name,
-    }
+use self::petgraph::Graph;
+
+pub fn generate_graph<'a>(list: &Vec<Process>) -> Graph<(), Process> {
+    let mut graph = Graph::new();
+
+    list.iter().for_each(|a| {
+        graph.add_node(&a);
+    });
+
+
+    graph
 }

@@ -4,6 +4,8 @@ extern crate nom;
 use std::str;
 use nom::{alphanumeric, space};
 
+use std::collections::HashMap;
+
 
 /// Gets the process' name
 named!(process_name<&str>, map_res!(alphanumeric, str::from_utf8));
@@ -28,37 +30,44 @@ named!(
 named!(
     parse_line<(&str, u32, Vec<&str>)>,
     do_parse!(
-        name: process_name >> space >> weight: process_weight >> space >> opt!(tag!(" -> "))
+        name: process_name >> space >> weight: process_weight >> opt!(complete!(tag!(" -> ")))
             >> children: process_children >> (name, weight, children)
     )
 );
 
-pub struct Process<'a> {
-    pub name: &'a str,
+#[derive(Clone)]
+pub struct Process {
+    pub name: String,
     pub weight: u32,
-    pub children_names: Vec<&'a str>,
-    pub children_process: Vec<&'a Process<'a>>,
-    pub parent: Option<&'a Process<'a>>,
+    pub children_names: Vec<String>,
 }
 
-impl<'a> Process<'a> {
-    pub fn new(name: &'a str, weight: u32, children: Vec<&'a str>) -> Self {
+impl Process {
+    pub fn new(name: String, weight: u32, children: Vec<String>) -> Self {
         Process {
             name,
             weight,
             children_names: children,
-            children_process: Vec::new(),
-            parent: None,
         }
     }
 }
 
-pub fn parse_input<'a>(input: &str) -> Vec<Process> {
+pub fn parse_input(input: &str) -> Vec<Process> {
+    let mut list: Vec<Process> = Vec::new();
+
     input
         .lines()
         .filter_map(|a| parse_line(a.as_bytes()).to_result().ok())
         .map(|(name, weight, children)| {
-            Process::new(name, weight, children)
+            Process::new(
+                name.into(),
+                weight,
+                children.into_iter().map(|a| a.into()).collect(),
+            )
         })
-        .collect()
+        .for_each(|a| {
+            list.push(a);
+        });
+
+    list
 }
