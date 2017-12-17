@@ -1,8 +1,8 @@
 extern crate advent_of_code_2017;
 extern crate day7_parser;
 
-use advent_of_code_2017::day7::get_root_process;
-use self::day7_parser::{parse_input, Process};
+use advent_of_code_2017::day7::resolve_part_two;
+use day7_parser::{parse_input, Process};
 
 fn main() {
     let input: &str = "ifyzcgi (14)
@@ -1343,8 +1343,8 @@ myookpi (54)
 olrgu (97)
 swnafht (44) -> lbxdtms, jensj, zkpfzio, jobwpao, jxfimbl";
 
-    let list = parse_input(input);
-    let res = get_root_process(&list);
-
-    println!("result: {}", res);
+    let list: Vec<Process> = parse_input(input);
+    let res = resolve_part_two(&list);
+    println!("Final res: {}", res);
+    //println!("{}: {}", my_proc.name, my_proc.get_global_weight(&list));
 }

@@ -4,9 +4,6 @@ extern crate nom;
 use std::str;
 use nom::{alphanumeric, space};
 
-use std::collections::HashMap;
-
-
 /// Gets the process' name
 named!(process_name<&str>, map_res!(alphanumeric, str::from_utf8));
 
@@ -49,6 +46,41 @@ impl Process {
             weight,
             children_names: children,
         }
+    }
+
+    pub fn get_global_weight(&self, list: &Vec<Process>) -> u32 {
+        let children_weight: u32 = list.iter()
+            .filter_map(|a| if self.children_names.contains(&a.name) {
+                Some(a.weight)
+            } else {
+                None
+            })
+            .sum();
+
+        self.weight + children_weight
+    }
+
+    pub fn is_balanced(&self, list: &Vec<Process>) -> bool {
+        let mut list_weight: Vec<u32> = Vec::new();
+        list.iter()
+            .filter_map(|a| if self.children_names.contains(&a.name) {
+                Some(a)
+            } else {
+                None
+            })
+            .for_each(|a| list_weight.push(a.weight.clone()));
+
+        if list_weight.len() > 0 {
+            let prev_value = list_weight[0];
+            for w in list_weight {
+                if w != prev_value {
+                    return false;
+                }
+            }
+        } else {
+            return true;
+        }
+        true
     }
 }
 

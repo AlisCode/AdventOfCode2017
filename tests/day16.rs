@@ -20,16 +20,16 @@ pub fn test_day16_spin_sample2() {
 
 /// x3/4, swapping the last two programs: eabdc.
 #[test]
-pub fn test_day16_partner_sample1() {
+pub fn test_day16_exchange_sample1() {
     let input: String = "eabcd".into();
     let wanted: String = "eabdc".into();
-    assert_eq!(partner(&input, 3, 4), wanted);
+    assert_eq!(exchange(&input, 3, 4), wanted);
 }
 
 /// x3/4, swapping the last two programs: eabdc.
 #[test]
-pub fn test_day16_exchange_sample1() {
+pub fn test_day16_partner_sample1() {
     let input: String = "eabdc".into();
     let wanted: String = "baedc".into();
-    assert_eq!(exchange(&input, 'e', 'b'), wanted);
+    assert_eq!(partner(&input, 'e', 'b'), wanted);
 }
