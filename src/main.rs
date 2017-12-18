@@ -1,6 +1,7 @@
 extern crate advent_of_code_2017;
 
-use advent_of_code_2017::day18::parse_input;
+use advent_of_code_2017::day18::{Instruction,parse_input};
+
 
 fn main() {
     let input: &str = "set a 1
@@ -14,5 +15,6 @@ jgz a -1
 set a 1
 jgz a -2";
 
-    parse_input(input);
+    let list: Vec<Instruction> = parse_input(input);
+    list.iter().for_each(|a| println!("{:?}", a));
 }

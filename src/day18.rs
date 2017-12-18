@@ -2,9 +2,29 @@ extern crate day18_parser;
 
 use self::day18_parser::{do_parse_line, Action};
 
-pub fn parse_input(input: &str) {
+#[derive(Debug)]
+pub struct Instruction {
+    action: Action,
+    register: String,
+    arg: Option<i32>,
+}
+
+impl Instruction {
+
+    pub fn new(data: (Action, &str, Option<i32>)) -> Self {
+        Instruction {
+            action: data.0,
+            register: data.1.into(),
+            arg: data.2,
+        }
+    }
+
+}
+
+pub fn parse_input(input: &str) -> Vec<Instruction> {
     input
         .lines()
-        .map(|a| do_parse_line(a))
-        .for_each(|(action, reg, val)| println!("----\nAction: {:?}\nReg: {:?}\nVal: {:?}", action, reg, val));
+        .map(|a| Instruction::new(do_parse_line(a)))
+        .collect()
 }
+
