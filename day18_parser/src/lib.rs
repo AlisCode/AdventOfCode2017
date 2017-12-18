@@ -1,7 +1,7 @@
 #[macro_use]
 extern crate nom;
 
-use nom::{alphanumeric, digit, space};
+use nom::{alphanumeric, digit, space, eol};
 use std::str;
 
 #[derive(Debug)]
@@ -55,12 +55,28 @@ named!(parse_reg<&str>, map_res!(alphanumeric, str::from_utf8));
 
 
 named!(
-    parse_line<(Action, &str, Option<i32>)>,
+    parse_line_with_arg<(Action, &str, Option<i32>)>,
     do_parse!(
-        action: parse_action >> space >> reg: parse_reg >> opt!(space) >> val: opt!(number)
-            >> (action, reg, val)
+        action: parse_action >> space >> reg: parse_reg >> space >> val: number >> (action, reg, Some(val))
     )
 );
+
+named!(
+    parse_line_without_arg<(Action, &str, Option<i32>)>,
+    do_parse!(
+        action: parse_action >> space >> reg: parse_reg >> (action, reg, None)
+    )
+);
+
+named!(
+    parse_line<(Action, &str, Option<i32>)>,
+        alt_complete!(
+            parse_line_with_arg |
+            parse_line_without_arg
+        ) 
+);
+
+
 
 pub fn do_parse_line(input: &str) -> (Action, &str, Option<i32>) {
     parse_line(input.as_bytes()).to_result().unwrap()
