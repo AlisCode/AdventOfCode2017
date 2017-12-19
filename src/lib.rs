@@ -1,6 +1,8 @@
 extern crate day12_parser;
 extern crate day16_parser;
 extern crate day7_parser;
+
+extern crate itertools;
 extern crate time;
 
 pub mod day1;

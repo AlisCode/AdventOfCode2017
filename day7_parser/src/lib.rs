@@ -1,8 +1,11 @@
 #[macro_use]
 extern crate nom;
+extern crate itertools;
 
 use std::str;
 use nom::{alphanumeric, space};
+
+use itertools::Itertools;
 
 /// Gets the process' name
 named!(process_name<&str>, map_res!(alphanumeric, str::from_utf8));
@@ -32,7 +35,7 @@ named!(
     )
 );
 
-#[derive(Clone)]
+#[derive(Debug, Clone)]
 pub struct Process {
     pub name: String,
     pub weight: u32,
@@ -49,39 +52,48 @@ impl Process {
     }
 
     pub fn get_global_weight(&self, list: &Vec<Process>) -> u32 {
-        let children_weight: u32 = list.iter()
-            .filter_map(|a| if self.children_names.contains(&a.name) {
-                Some(a.weight)
-            } else {
-                None
-            })
+        let children_weight: u32 = self.get_children_process(list)
+            .iter()
+            .map(|a| a.get_global_weight(list))
             .sum();
 
         self.weight + children_weight
     }
 
+    /// NOTA : 
+    /// Take the children process
+    /// Group em by global_weight
+    /// Balanced <==> only one group
     pub fn is_balanced(&self, list: &Vec<Process>) -> bool {
-        let mut list_weight: Vec<u32> = Vec::new();
-        list.iter()
-            .filter_map(|a| if self.children_names.contains(&a.name) {
-                Some(a)
-            } else {
-                None
-            })
-            .for_each(|a| list_weight.push(a.weight.clone()));
-
-        if list_weight.len() > 0 {
-            let prev_value = list_weight[0];
-            for w in list_weight {
-                if w != prev_value {
-                    return false;
-                }
-            }
-        } else {
+        let groups = self.get_children_process(list).into_iter().group_by(|a| a.get_global_weight(list));
+        if groups.into_iter().count() == 1 {
+            println!("process {} is balanced", self.name);
             return true;
         }
-        true
+        else {
+            println!("process {} is unbalanced", self.name);
+            return false;
+        }
     }
+
+    /// NOTA :
+    /// Take the children process
+    /// Group by global_weight
+    /// target weight is the key from the group that has a count > 1
+    /// unbalanced child is the process that is not in this group (<==> the process is alone in its group)
+    pub fn get_unbalanced_child_correct_weight() -> u32 {
+        0
+    }
+
+    pub fn get_children_process<'a>(&self, list: &'a Vec<Process>) -> Vec<&'a Process> {
+        list.iter()
+        .filter_map(|a| if self.children_names.contains(&a.name) {
+            Some(a)
+        } else {
+            None
+        })
+        .collect()
+    } 
 }
 
 pub fn parse_input(input: &str) -> Vec<Process> {

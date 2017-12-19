@@ -14,5 +14,6 @@ day18_parser = { path = "day18_parser" }
 petgraph = "*"
 time = "*"
 rayon = "*"
+itertools = "*"
 
 [workspace]
