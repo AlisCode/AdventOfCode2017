@@ -162,11 +162,9 @@ pub fn resolve_part_two(input: &str) {
     registers_two.insert("p".into(), 1);
 
     while index_one < list_one.len() && index_two < list_two.len() {
-        let instruction_one = &list_one[index_one];
-        let instruction_two = &list_two[index_two];
 
-        if !lock_one {
-            println!("Instruction one is {:?}", instruction_one);
+        while !lock_one {
+            let instruction_one = &list_one[index_one];
             handle_instruction(
                 instruction_one,
                 &mut index_one,
@@ -179,8 +177,9 @@ pub fn resolve_part_two(input: &str) {
             );
             index_one += 1;
         }
-        if !lock_two {
-            println!("Instruction two is {:?}", instruction_two);
+
+        while !lock_two {
+            let instruction_two = &list_two[index_two];
             handle_instruction(
                 instruction_two,
                 &mut index_two,
@@ -193,12 +192,9 @@ pub fn resolve_part_two(input: &str) {
             );
             index_two += 1;
         }
-
-        if lock_one && lock_two {
-            println!("Deadlock reached !");
-            process::exit(0);
-        }
     }
+
+    println!("reached end");
 }
 
 pub fn handle_instruction(
