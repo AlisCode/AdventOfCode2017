@@ -51,13 +51,15 @@ impl Process {
         }
     }
 
+    /// Computes the global weight of the process
     pub fn get_global_weight(&self, list: &Vec<Process>) -> u32 {
         let children_weight: u32 = self.get_children_process(list)
             .iter()
             .map(|a| a.get_global_weight(list))
             .sum();
 
-        self.weight + children_weight
+        let global_weight: u32 = self.weight + children_weight;
+        global_weight
     }
 
     /// NOTA : 
@@ -66,12 +68,11 @@ impl Process {
     /// Balanced <==> only one group
     pub fn is_balanced(&self, list: &Vec<Process>) -> bool {
         let groups = self.get_children_process(list).into_iter().group_by(|a| a.get_global_weight(list));
-        if groups.into_iter().count() == 1 {
-            println!("process {} is balanced", self.name);
+        let count = groups.into_iter().count();
+        if count <= 1 {
             return true;
         }
         else {
-            println!("process {} is unbalanced", self.name);
             return false;
         }
     }
@@ -81,8 +82,18 @@ impl Process {
     /// Group by global_weight
     /// target weight is the key from the group that has a count > 1
     /// unbalanced child is the process that is not in this group (<==> the process is alone in its group)
-    pub fn get_unbalanced_child_correct_weight() -> u32 {
-        0
+    pub fn get_unbalanced_child_correct_weight(&self, list: &Vec<Process>) -> u32 {
+        let mut groups = self.get_children_process(list).into_iter().group_by(|a| a.get_global_weight(list));
+        let target_weight = groups.into_iter().filter_map(|(key, children)| if children.count() > 1 { Some(key) } else { None }).next().unwrap();
+        
+        let mut groups = self.get_children_process(list).into_iter().group_by(|a| a.get_global_weight(list));
+        let actual_global_weight = groups.into_iter().filter_map(|(key, children)| if children.count() == 1 { Some(key) } else { None }).next().unwrap();
+        
+        let process_to_change = list.iter().filter(|a| a.get_global_weight(list) == actual_global_weight).next().unwrap();
+        
+        println!("{} {}", target_weight, actual_global_weight);
+        let diff = target_weight as i32 - actual_global_weight as i32;
+        (process_to_change.weight as i32 + diff) as u32
     }
 
     pub fn get_children_process<'a>(&self, list: &'a Vec<Process>) -> Vec<&'a Process> {
