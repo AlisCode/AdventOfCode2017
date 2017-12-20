@@ -5,7 +5,7 @@ use nom::digit;
 use std::str;
 
 
-#[derive(Debug)]
+#[derive(Debug, Eq, PartialEq)]
 pub struct Vector3 {
 
   pub x: i32,

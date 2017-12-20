@@ -2,7 +2,9 @@ extern crate day20_parser;
 
 use self::day20_parser::{Vector3, do_parse_line};
 
-#[derive(Debug)]
+use std::cmp::Ordering;
+
+#[derive(Debug, Eq, PartialEq)]
 pub struct Particle {
 
   pos: Vector3,
@@ -41,4 +43,40 @@ pub fn parse_input(input: &str) -> Vec<Particle> {
   })
   .collect()
 
+}
+
+impl PartialOrd for Particle {
+  fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
+    Some(self.cmp(other))
+  } 
+}
+
+impl Ord for Particle {
+  fn cmp(&self, other: &Self) -> Ordering {
+    let acc_manhattan = self.accel.manhattan_distance();
+    let other_acc_manhattan = other.accel.manhattan_distance();
+    if acc_manhattan > other_acc_manhattan { return Ordering::Greater }
+    else if acc_manhattan < other_acc_manhattan { return Ordering::Less }
+    
+    let vel_manhattan = self.accel.manhattan_distance();
+    let other_vel_manhattan = other.accel.manhattan_distance();
+    if vel_manhattan > other_vel_manhattan { return Ordering::Greater }
+    else if vel_manhattan < other_vel_manhattan { return Ordering::Less }
+    
+    let pos_manhattan = self.accel.manhattan_distance();
+    let other_pos_manhattan = other.accel.manhattan_distance();
+    if pos_manhattan > other_pos_manhattan { return Ordering::Greater }
+    else if pos_manhattan < other_pos_manhattan { return Ordering::Less }
+
+    Ordering::Equal
+
+  }
+}
+
+pub fn resolve_part_one(list: &Vec<Particle>) -> usize {
+
+  let mut sorted_list: Vec<(usize, &Particle)> = list.iter().enumerate().collect();
+  sorted_list.sort_by_key(|&(_, key)| key);
+
+  sorted_list[0].0
 }
