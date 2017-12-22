@@ -1,6 +1,7 @@
 extern crate advent_of_code_2017;
 
-use advent_of_code_2017::day21::{Grid, parse_grid};
+use advent_of_code_2017::day21::{Grid, parse_grid, parse_input};
+use std::collections::HashMap;
 
 #[test]
 pub fn test_day21_grid_parsing_sample1() {
@@ -244,4 +245,20 @@ pub fn test_day21_grid_count_on_sample2() {
 pub fn test_day21_grid_count_on_sample3() {
     let grid: Grid = parse_grid(".##/#.#/.#.");
     assert_eq!(grid.count_on_cases(), 5);
+}
+
+#[test]
+pub fn test_day21_rules_hashmap_sample1() {
+    let rules: HashMap<Grid, Grid> = parse_input("../.# => ##./#../...
+.#./..#/### => #..#/..../..../#..#");
+
+    let grid_one: Grid = parse_grid("#./..");
+    let grid_two: Grid = parse_grid(".#/..");
+    let grid_three: Grid = parse_grid("../#.");
+    let grid_four: Grid = parse_grid("../.#");
+
+    assert_eq!(rules.contains_key(&grid_four), true);
+    assert_eq!(rules.contains_key(&grid_one), true);
+    assert_eq!(rules.contains_key(&grid_two), true);
+    assert_eq!(rules.contains_key(&grid_three), true);
 }

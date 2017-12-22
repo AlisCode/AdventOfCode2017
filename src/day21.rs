@@ -101,15 +101,11 @@ impl Grid {
     }
 
     pub fn split(&self) -> Vec<Grid> {
-        println!("Reached");
         let block_size = match self.size % 3 {
             0 => 3,
             _ => 2
         };
-        println!("Reached too");
         if block_size == self.size { return vec!(self.clone()); }
-
-        println!("split into {} ", self.size);
 
         (0..self.size)
             .map(|i| {
@@ -138,18 +134,17 @@ impl Grid {
 
         let mut values: Vec<Vec<bool>> = Vec::new();
 
-        let mut base: usize = 0;
         let mut base_other: usize = 0;
         let mut offset: usize = 0;
+        let mut offset_other: usize = 0;
 
         for i in 0..num_iter {
-            base = i % sub_grids;
+            offset = i / sub_grids;
             base_other = i % small_grid_size;
-            offset = i / small_grid_size;
+            offset_other = i / small_grid_size;
 
             let mut line_value: Vec<bool> = Vec::new();
-            println!("{} {}", i - (base_other + offset), i - base + sub_grids);
-            for j in i - (base_other + offset)..i - base + sub_grids {
+            for j in offset_other * sub_grids..offset_other * sub_grids + sub_grids {
                 line_value.append(&mut list[j].values[base_other]);
             }
             values.push(line_value);
@@ -198,9 +193,9 @@ fn map_char(c: char) -> bool
 }
 
 pub fn image_processing_iteration(grid: Grid, rules: &HashMap<Grid, Grid>) -> Grid {
-    let mut grid: Vec<Grid> = grid.split().iter().filter_map(|a| match rules.get(a) {
-        Some(new_grid) => Some(new_grid.clone()),
-        _ => Some(a.clone())
+    let mut grid: Vec<Grid> = grid.split().iter().filter_map(|a| { println!("{:?}", a); match rules.get(a) {
+        Some(new_grid) => { println!("Matched some"); Some(new_grid.clone()) },
+        _ => { println!("Didnt match some"); Some(a.clone()) } }
     }).collect();
 
     Grid::reconstruct(&mut grid)
@@ -209,15 +204,9 @@ pub fn image_processing_iteration(grid: Grid, rules: &HashMap<Grid, Grid>) -> Gr
 pub fn resolve_part_one(input: &str) -> usize
 {
     let rules = parse_input(input);
-    //println!("{:?}", rules);
     let mut base_grid = parse_grid(".#./..#/###");
     base_grid = image_processing_iteration(base_grid, &rules);
-    println!("{:?}", base_grid);
-
-    /*
     base_grid = image_processing_iteration(base_grid, &rules);
-    println!("{:?}", base_grid);
+    
     base_grid.count_on_cases()
-    */
-    0
 }

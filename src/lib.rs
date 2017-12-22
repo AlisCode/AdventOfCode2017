@@ -1,4 +1,3 @@
-#![feature(iterator_step_by)]
 extern crate day12_parser;
 extern crate day16_parser;
 extern crate day7_parser;
