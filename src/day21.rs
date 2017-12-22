@@ -1,35 +1,75 @@
 use std::collections::HashMap;
+use std::hash::{Hash, Hasher};
 
 #[derive(Hash, Clone, Debug)]
 pub struct Grid {
     pub size: usize,
     pub values: Vec<Vec<bool>>,
-
 }
 
 impl PartialEq for Grid {
     fn eq(&self, other: &Self) -> bool {
-        if self.size != other.size { return false; }
-        if self.values == other.values { return true; }
+        if self.size != other.size {
+            return false;
+        }
+        if self.values == other.values {
+            return true;
+        }
 
         let one = self.transpose();
-        if self.values == one.values { return true; }
+        if self.values == one.values {
+            return true;
+        }
         let two = one.flip_vertical();
-        if self.values == two.values { return true; }
+        if self.values == two.values {
+            return true;
+        }
         let three = two.transpose();
-        if self.values == three.values { return true; }
+        if self.values == three.values {
+            return true;
+        }
         let four = three.flip_vertical();
-        if self.values == four.values { return true; }
+        if self.values == four.values {
+            return true;
+        }
         let five = four.transpose();
-        if self.values == five.values { return true; }
+        if self.values == five.values {
+            return true;
+        }
         let six = five.flip_vertical();
-        if self.values == six.values { return true; }
+        if self.values == six.values {
+            return true;
+        }
         let seven = six.transpose();
-        if self.values == seven.values { return true; }
+        if self.values == seven.values {
+            return true;
+        }
         let eight = seven.flip_vertical();
-        if self.values == eight.values { return true; }
+        if self.values == eight.values {
+            return true;
+        }
 
         false
+    }
+}
+
+impl Hash for Grid {
+    fn hash<H: Hasher>(&self, hasher: H) {
+        let one = self.transpose();
+
+        let two = one.flip_vertical();
+
+        let three = two.transpose();
+
+        let four = three.flip_vertical();
+
+        let five = four.transpose();
+
+        let six = five.flip_vertical();
+
+        let seven = six.transpose();
+
+        let eight = seven.flip_vertical();
     }
 }
 
@@ -103,9 +143,11 @@ impl Grid {
     pub fn split(&self) -> Vec<Grid> {
         let block_size = match self.size % 3 {
             0 => 3,
-            _ => 2
+            _ => 2,
         };
-        if block_size == self.size { return vec!(self.clone()); }
+        if block_size == self.size {
+            return vec![self.clone()];
+        }
 
         (0..self.size)
             .map(|i| {
@@ -115,7 +157,8 @@ impl Grid {
                 for x in 0..block_size {
                     let mut line_value: Vec<bool> = Vec::new();
                     for y in 0..block_size {
-                        line_value.push(self.values[k * block_size + x][j * block_size + y].clone());
+                        line_value
+                            .push(self.values[k * block_size + x][j * block_size + y].clone());
                     }
                     values.push(line_value);
                 }
@@ -125,7 +168,9 @@ impl Grid {
     }
 
     pub fn reconstruct(list: &mut Vec<Grid>) -> Grid {
-        if list.len() == 1 { return list[0].clone(); }
+        if list.len() == 1 {
+            return list[0].clone();
+        }
 
         let sub_grids = (list.len() as f64).sqrt() as usize;
         let small_grid_size = list[0].size.clone();
@@ -154,7 +199,10 @@ impl Grid {
     }
 
     pub fn count_on_cases(&self) -> usize {
-        self.values.iter().map(|a| a.iter().filter(|&&b| b).count()).sum()
+        self.values
+            .iter()
+            .map(|a| a.iter().filter(|&&b| b).count())
+            .sum()
     }
 }
 
@@ -162,9 +210,7 @@ pub fn parse_input(input: &str) -> HashMap<Grid, Grid> {
     let mut map: HashMap<Grid, Grid> = HashMap::new();
 
     input.lines().for_each(|a| {
-        let mut grids: Vec<Grid> = a.split(" => ").map(|b| {
-            parse_grid(b)
-        }).collect();
+        let mut grids: Vec<Grid> = a.split(" => ").map(|b| parse_grid(b)).collect();
 
         map.insert(grids.remove(0), grids.remove(0));
     });
@@ -173,18 +219,20 @@ pub fn parse_input(input: &str) -> HashMap<Grid, Grid> {
 }
 
 pub fn parse_grid(input: &str) -> Grid {
-    Grid::new(input.split("/")
-        .map(|c| {
-            c.chars()
-                .fold(Vec::new(), |mut vec, d| {
+    Grid::new(
+        input
+            .split("/")
+            .map(|c| {
+                c.chars().fold(Vec::new(), |mut vec, d| {
                     vec.push(map_char(d));
                     vec
                 })
-        }).collect())
+            })
+            .collect(),
+    )
 }
 
-fn map_char(c: char) -> bool
-{
+fn map_char(c: char) -> bool {
     match c {
         '.' => false,
         '#' => true,
@@ -193,20 +241,31 @@ fn map_char(c: char) -> bool
 }
 
 pub fn image_processing_iteration(grid: Grid, rules: &HashMap<Grid, Grid>) -> Grid {
-    let mut grid: Vec<Grid> = grid.split().iter().filter_map(|a| { println!("{:?}", a); match rules.get(a) {
-        Some(new_grid) => { println!("Matched some"); Some(new_grid.clone()) },
-        _ => { println!("Didnt match some"); Some(a.clone()) } }
-    }).collect();
+    let mut grid: Vec<Grid> = grid.split()
+        .iter()
+        .filter_map(|a| {
+            println!("{:?}", a);
+            match rules.get(a) {
+                Some(new_grid) => {
+                    println!("Matched some");
+                    Some(new_grid.clone())
+                }
+                _ => {
+                    println!("Didnt match some");
+                    Some(a.clone())
+                }
+            }
+        })
+        .collect();
 
     Grid::reconstruct(&mut grid)
 }
 
-pub fn resolve_part_one(input: &str) -> usize
-{
+pub fn resolve_part_one(input: &str) -> usize {
     let rules = parse_input(input);
     let mut base_grid = parse_grid(".#./..#/###");
     base_grid = image_processing_iteration(base_grid, &rules);
     base_grid = image_processing_iteration(base_grid, &rules);
-    
+
     base_grid.count_on_cases()
 }
