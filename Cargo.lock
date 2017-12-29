@@ -7,6 +7,8 @@ dependencies = [
  "day18_parser 1.0.0",
  "day20_parser 1.0.0",
  "day7_parser 1.0.0",
+ "day8_parser 1.0.0",
+ "day9_parser 1.0.0",
  "itertools 0.7.4 (registry+https://github.com/rust-lang/crates.io-index)",
  "petgraph 0.4.10 (registry+https://github.com/rust-lang/crates.io-index)",
  "rayon 0.9.0 (registry+https://github.com/rust-lang/crates.io-index)",
@@ -60,6 +62,20 @@ name = "day7_parser"
 version = "1.0.0"
 dependencies = [
  "itertools 0.7.4 (registry+https://github.com/rust-lang/crates.io-index)",
+ "nom 3.2.1 (registry+https://github.com/rust-lang/crates.io-index)",
+]
+
+[[package]]
+name = "day8_parser"
+version = "1.0.0"
+dependencies = [
+ "nom 3.2.1 (registry+https://github.com/rust-lang/crates.io-index)",
+]
+
+[[package]]
+name = "day9_parser"
+version = "1.0.0"
+dependencies = [
  "nom 3.2.1 (registry+https://github.com/rust-lang/crates.io-index)",
 ]
 

@@ -8,11 +8,11 @@ pub fn test_day21_grid_parsing_sample1() {
     let input: &str = ".#./..#/###";
     let grid: Grid = parse_grid(input);
 
-    let wanted_grid = Grid::new(vec!(
-        vec!(false, true, false),
-        vec!(false, false, true),
-        vec!(true, true, true),
-    ));
+    let wanted_grid = Grid::new(vec![
+        vec![false, true, false],
+        vec![false, false, true],
+        vec![true, true, true],
+    ]);
 
     assert_eq!(grid.values, wanted_grid.values);
     assert_eq!(grid.size, wanted_grid.size);
@@ -20,104 +20,92 @@ pub fn test_day21_grid_parsing_sample1() {
 
 #[test]
 pub fn test_day21_grid_transpose_sample1() {
-    let init_grid = Grid::new(vec!(
-        vec!(false, true, false),
-        vec!(false, false, true),
-        vec!(true, true, true),
-    ));
+    let init_grid = Grid::new(vec![
+        vec![false, true, false],
+        vec![false, false, true],
+        vec![true, true, true],
+    ]);
     let transposed_grid: Grid = init_grid.transpose();
 
-    let wanted_grid = Grid::new(vec!(
-        vec!(false, false, true),
-        vec!(true, false, true),
-        vec!(false, true, true),
-    ));
+    let wanted_grid = Grid::new(vec![
+        vec![false, false, true],
+        vec![true, false, true],
+        vec![false, true, true],
+    ]);
 
     assert_eq!(transposed_grid.values, wanted_grid.values);
 }
 
 #[test]
 pub fn test_day21_grid_transpose_sample2() {
-    let init_grid = Grid::new(vec!(
-        vec!(false, false),
-        vec!(true, false),
-    ));
+    let init_grid = Grid::new(vec![vec![false, false], vec![true, false]]);
     let transposed_grid: Grid = init_grid.transpose();
 
-    let wanted_grid = Grid::new(vec!(
-        vec!(false, true),
-        vec!(false, false),
-    ));
+    let wanted_grid = Grid::new(vec![vec![false, true], vec![false, false]]);
 
     assert_eq!(transposed_grid.values, wanted_grid.values);
 }
 
 #[test]
 pub fn test_day21_grid_rotate_right_sample1() {
-    let init_grid = Grid::new(vec!(
-        vec!(false, true, false),
-        vec!(false, false, true),
-        vec!(true, true, true),
-    ));
+    let init_grid = Grid::new(vec![
+        vec![false, true, false],
+        vec![false, false, true],
+        vec![true, true, true],
+    ]);
     let transposed_grid: Grid = init_grid.rotate_right();
 
-    let wanted_grid = Grid::new(vec!(
-        vec!(true, false, false),
-        vec!(true, false, true),
-        vec!(true, true, false),
-    ));
+    let wanted_grid = Grid::new(vec![
+        vec![true, false, false],
+        vec![true, false, true],
+        vec![true, true, false],
+    ]);
 
     assert_eq!(transposed_grid.values, wanted_grid.values);
 }
 
 #[test]
 pub fn test_day21_grid_rotate_right_sample2() {
-    let init_grid = Grid::new(vec!(
-        vec!(false, true),
-        vec!(true, false),
-    ));
+    let init_grid = Grid::new(vec![vec![false, true], vec![true, false]]);
     let transposed_grid: Grid = init_grid.rotate_right();
 
-    let wanted_grid = Grid::new(vec!(
-        vec!(true, false),
-        vec!(false, true),
-    ));
+    let wanted_grid = Grid::new(vec![vec![true, false], vec![false, true]]);
 
     assert_eq!(transposed_grid.values, wanted_grid.values);
 }
 
 #[test]
 pub fn test_day21_grid_flip_horizontal_sample1() {
-    let init_grid = Grid::new(vec!(
-        vec!(false, true, false),
-        vec!(false, false, true),
-        vec!(true, true, true),
-    ));
+    let init_grid = Grid::new(vec![
+        vec![false, true, false],
+        vec![false, false, true],
+        vec![true, true, true],
+    ]);
     let flipped_grid: Grid = init_grid.flip_horizontal();
 
-    let wanted_grid = Grid::new(vec!(
-        vec!(true, true, true),
-        vec!(false, false, true),
-        vec!(false, true, false),
-    ));
+    let wanted_grid = Grid::new(vec![
+        vec![true, true, true],
+        vec![false, false, true],
+        vec![false, true, false],
+    ]);
 
     assert_eq!(flipped_grid.values, wanted_grid.values);
 }
 
 #[test]
 pub fn test_day21_grid_flip_vertical_sample1() {
-    let init_grid = Grid::new(vec!(
-        vec!(false, true, false),
-        vec!(false, false, true),
-        vec!(true, true, true),
-    ));
+    let init_grid = Grid::new(vec![
+        vec![false, true, false],
+        vec![false, false, true],
+        vec![true, true, true],
+    ]);
     let flipped_grid: Grid = init_grid.flip_vertical();
 
-    let wanted_grid = Grid::new(vec!(
-        vec!(false, true, false),
-        vec!(true, false, false),
-        vec!(true, true, true),
-    ));
+    let wanted_grid = Grid::new(vec![
+        vec![false, true, false],
+        vec![true, false, false],
+        vec![true, true, true],
+    ]);
 
     assert_eq!(flipped_grid.values, wanted_grid.values);
 }
@@ -168,7 +156,7 @@ pub fn test_day21_grid_reconstruct_sample1() {
     let grid_three: Grid = parse_grid("../#.");
     let grid_four: Grid = parse_grid("../.#");
 
-    let mut list_grid = vec!(grid_one, grid_two, grid_three, grid_four);
+    let mut list_grid = vec![grid_one, grid_two, grid_three, grid_four];
     let final_grid = Grid::reconstruct(&mut list_grid);
 
     let wanted_grid = parse_grid("#..#/..../..../#..#");
@@ -180,7 +168,7 @@ pub fn test_day21_grid_reconstruct_sample1() {
 pub fn test_day21_grid_reconstruct_sample2() {
     let grid_one: Grid = parse_grid("#./..");
 
-    let mut list_grid = vec!(grid_one);
+    let mut list_grid = vec![grid_one];
     let final_grid = Grid::reconstruct(&mut list_grid);
 
     let wanted_grid = parse_grid("#./..");
@@ -195,7 +183,7 @@ pub fn test_day21_grid_reconstruct_sample3() {
     let grid_three: Grid = parse_grid("##./#../...");
     let grid_four: Grid = parse_grid("##./#../...");
 
-    let mut list_grid = vec!(grid_one, grid_two, grid_three, grid_four);
+    let mut list_grid = vec![grid_one, grid_two, grid_three, grid_four];
     let final_grid = Grid::reconstruct(&mut list_grid);
 
     let wanted_grid = parse_grid("##.##./#..#../....../##.##./#..#../......");
@@ -230,6 +218,36 @@ pub fn test_day21_grid_split_sample2() {
 }
 
 #[test]
+pub fn test_day21_grid_split_sample3() {
+
+    let wanted_grid = parse_grid("##.##./#..#../....../##.##./#..#../......");
+    
+    let grid_one = parse_grid("##/#.");
+    let grid_two = parse_grid(".#/.#");
+    let grid_three = parse_grid("#./..");
+
+    let grid_four = parse_grid("../##");
+    let grid_five = parse_grid("../.#");
+    let grid_six = parse_grid("../#.");
+
+    let grid_seven = parse_grid("#./..");
+    let grid_eight = parse_grid(".#/..");
+    let grid_nine = parse_grid("../..");
+
+    let split = wanted_grid.split();
+
+    assert_eq!(grid_one.values, split[0].values);
+    assert_eq!(grid_two.values, split[1].values);
+    assert_eq!(grid_three.values, split[2].values);
+    assert_eq!(grid_four.values, split[3].values);
+    assert_eq!(grid_five.values, split[4].values);
+    assert_eq!(grid_six.values, split[5].values);
+    assert_eq!(grid_seven.values, split[6].values);
+    assert_eq!(grid_eight.values, split[7].values);
+    assert_eq!(grid_nine.values, split[8].values);
+}
+
+#[test]
 pub fn test_day21_grid_count_on_sample1() {
     let grid: Grid = parse_grid("##/##");
     assert_eq!(grid.count_on_cases(), 4);
@@ -249,8 +267,10 @@ pub fn test_day21_grid_count_on_sample3() {
 
 #[test]
 pub fn test_day21_rules_hashmap_sample1() {
-    let rules: HashMap<Grid, Grid> = parse_input("../.# => ##./#../...
-.#./..#/### => #..#/..../..../#..#");
+    let rules: HashMap<Grid, Grid> = parse_input(
+        "../.# => ##./#../...
+.#./..#/### => #..#/..../..../#..#",
+    );
 
     let grid_one: Grid = parse_grid("#./..");
     let grid_two: Grid = parse_grid(".#/..");

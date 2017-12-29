@@ -1,7 +1,7 @@
 use std::collections::HashMap;
 use std::hash::{Hash, Hasher};
 
-#[derive(Hash, Clone, Debug)]
+#[derive(Clone, Debug)]
 pub struct Grid {
     pub size: usize,
     pub values: Vec<Vec<bool>>,
@@ -12,40 +12,51 @@ impl PartialEq for Grid {
         if self.size != other.size {
             return false;
         }
+
+        // ID
         if self.values == other.values {
             return true;
         }
 
-        let one = self.transpose();
-        if self.values == one.values {
+        // FlipX
+        let flip = other.flip_vertical();
+        if self.values == flip.values {
             return true;
         }
-        let two = one.flip_vertical();
-        if self.values == two.values {
+
+        // Rot 90
+        let rot_one = other.rotate_right();
+        if self.values == rot_one.values {
             return true;
         }
-        let three = two.transpose();
-        if self.values == three.values {
+
+        // Rot 180
+        let rot_two = rot_one.rotate_right();
+        if self.values == rot_two.values {
             return true;
         }
-        let four = three.flip_vertical();
-        if self.values == four.values {
+
+        // Rot 270
+        let rot_three = rot_two.rotate_right();
+        if self.values == rot_three.values {
             return true;
         }
-        let five = four.transpose();
-        if self.values == five.values {
+
+        // Flip after Rot90
+        let flip_after_rot_one = rot_one.flip_vertical();
+        if self.values == flip_after_rot_one.values {
             return true;
         }
-        let six = five.flip_vertical();
-        if self.values == six.values {
+
+        // Flip after Rot180
+        let flip_after_rot_two = rot_two.flip_vertical();
+        if self.values == flip_after_rot_two.values {
             return true;
         }
-        let seven = six.transpose();
-        if self.values == seven.values {
-            return true;
-        }
-        let eight = seven.flip_vertical();
-        if self.values == eight.values {
+
+        // Flip after Rot270
+        let flip_after_rot_three = rot_three.flip_vertical();
+        if self.values == flip_after_rot_three.values {
             return true;
         }
 
@@ -54,22 +65,35 @@ impl PartialEq for Grid {
 }
 
 impl Hash for Grid {
-    fn hash<H: Hasher>(&self, hasher: H) {
-        let one = self.transpose();
+    fn hash<H: Hasher>(&self, hasher: &mut H) {
 
-        let two = one.flip_vertical();
+        let mut global_values = Vec::new();
 
-        let three = two.transpose();
+        global_values.push(self.values.clone());
 
-        let four = three.flip_vertical();
+        let flip = self.flip_vertical();
+        global_values.push(flip.values.clone());
 
-        let five = four.transpose();
+        let rot = self.rotate_right();
+        global_values.push(rot.values.clone());
 
-        let six = five.flip_vertical();
+        let rot_flip = rot.flip_vertical();
+        global_values.push(rot_flip.values.clone());
 
-        let seven = six.transpose();
+        let rot_two = rot.rotate_right();
+        global_values.push(rot_two.values.clone());
 
-        let eight = seven.flip_vertical();
+        let rot_two_flip = rot_two.flip_vertical();
+        global_values.push(rot_two_flip.values.clone());
+
+        let rot_three = rot_two.rotate_right();
+        global_values.push(rot_three.values.clone());
+
+        let rot_three_flip = rot_three.flip_vertical();
+        global_values.push(rot_three_flip.values.clone());
+
+        global_values.sort();
+        global_values.hash(hasher);
     }
 }
 
@@ -141,24 +165,31 @@ impl Grid {
     }
 
     pub fn split(&self) -> Vec<Grid> {
-        let block_size = match self.size % 3 {
-            0 => 3,
-            _ => 2,
+        let block_size = match self.size % 2 {
+            0 => 2,
+            _ => 3,
         };
         if block_size == self.size {
             return vec![self.clone()];
         }
 
-        (0..self.size)
+        let grid_per_line = self.size / block_size;
+        let num_iter: usize = grid_per_line * grid_per_line;
+
+        (0..num_iter)
             .map(|i| {
                 let mut values: Vec<Vec<bool>> = Vec::new();
-                let j = i % block_size;
-                let k = i / block_size;
+                let j = i % grid_per_line;
+                let k = i / grid_per_line;
+
                 for x in 0..block_size {
                     let mut line_value: Vec<bool> = Vec::new();
                     for y in 0..block_size {
-                        line_value
-                            .push(self.values[k * block_size + x][j * block_size + y].clone());
+                        line_value.push(
+                            self.values[k * block_size + x][j * block_size +
+                                                                y]
+                                .clone(),
+                        );
                     }
                     values.push(line_value);
                 }
@@ -179,14 +210,9 @@ impl Grid {
 
         let mut values: Vec<Vec<bool>> = Vec::new();
 
-        let mut base_other: usize = 0;
-        let mut offset: usize = 0;
-        let mut offset_other: usize = 0;
-
         for i in 0..num_iter {
-            offset = i / sub_grids;
-            base_other = i % small_grid_size;
-            offset_other = i / small_grid_size;
+            let base_other = i % small_grid_size;
+            let offset_other = i / small_grid_size;
 
             let mut line_value: Vec<bool> = Vec::new();
             for j in offset_other * sub_grids..offset_other * sub_grids + sub_grids {
@@ -243,18 +269,9 @@ fn map_char(c: char) -> bool {
 pub fn image_processing_iteration(grid: Grid, rules: &HashMap<Grid, Grid>) -> Grid {
     let mut grid: Vec<Grid> = grid.split()
         .iter()
-        .filter_map(|a| {
-            println!("{:?}", a);
-            match rules.get(a) {
-                Some(new_grid) => {
-                    println!("Matched some");
-                    Some(new_grid.clone())
-                }
-                _ => {
-                    println!("Didnt match some");
-                    Some(a.clone())
-                }
-            }
+        .filter_map(|a| match rules.get(a) {
+            Some(new_grid) => Some(new_grid.clone()),
+            _ => Some(a.clone()),
         })
         .collect();
 
@@ -264,8 +281,21 @@ pub fn image_processing_iteration(grid: Grid, rules: &HashMap<Grid, Grid>) -> Gr
 pub fn resolve_part_one(input: &str) -> usize {
     let rules = parse_input(input);
     let mut base_grid = parse_grid(".#./..#/###");
-    base_grid = image_processing_iteration(base_grid, &rules);
-    base_grid = image_processing_iteration(base_grid, &rules);
+
+    for _ in 0..5 {
+        base_grid = image_processing_iteration(base_grid, &rules);
+    }
+
+    base_grid.count_on_cases()
+}
+
+pub fn resolve_part_two(input: &str) -> usize {
+    let rules = parse_input(input);
+    let mut base_grid = parse_grid(".#./..#/###");
+
+    for _ in 0..18 {
+        base_grid = image_processing_iteration(base_grid, &rules);
+    }
 
     base_grid.count_on_cases()
 }
