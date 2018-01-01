@@ -69,8 +69,7 @@ impl Value {
 named!(
     action_tags,
     alt!(
-        tag!("snd") | tag!("set") | tag!("add") | tag!("mul") | tag!("mod") | tag!("rcv")
-            | tag!("jgz")
+        tag!("snd") | tag!("set") | tag!("add") | tag!("mul") | tag!("mod") | tag!("rcv") | tag!("jgz")
     )
 );
 
