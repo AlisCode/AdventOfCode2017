@@ -29,7 +29,6 @@ impl Registers {
     }
 
     pub fn get_val(&mut self, reg: &str) -> i32 {
-
         if self.values.contains_key(reg) {
             return *self.values.get(reg).unwrap();
         }
@@ -38,7 +37,6 @@ impl Registers {
     }
 
     pub fn set_val(&mut self, reg: &str, new_val: i32) {
-
         if self.values.contains_key(reg) {
             let val = self.values.get_mut(reg).unwrap();
             *val = new_val;
@@ -69,10 +67,10 @@ impl Value {
         Value::Register(input.into())
     }
 
-    pub fn get_val(&self, regs: &Registers) -> i32 {
+    pub fn get_val(&self, regs: &mut Registers) -> i32 {
         match self {
-            Value::Number(n) => n,
-            Value::Register(r) => regs.get_val(r),
+            &Value::Number(n) => n,
+            &Value::Register(ref r) => regs.get_val(&r),
         }
     }
 }
@@ -106,18 +104,16 @@ named!(
 );
 
 named!(
-    parse_line<(Action, &str, Value)>, do_parse!(
+    parse_line<(Action, Value, Value)>, do_parse!(
         action: get_action >>
         space >>
-        register: parse_reg >>
+        val_one: get_value >>
         space >>
-        value: get_value >>
-        (action, register, value)
+        val_two: get_value >>
+        (action, val_one, val_two)
     )
 );
 
-pub fn do_parse_line(input: &str) -> (Action, &str, Value) {
-
+pub fn do_parse_line(input: &str) -> (Action, Value, Value) {
     parse_line(input.as_bytes()).to_result().unwrap()
-
 }
