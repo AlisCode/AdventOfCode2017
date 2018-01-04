@@ -10,13 +10,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="1be3914c-90da-4f80-843d-e2ae47ab7995" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" afterPath="$PROJECT_DIR$/.idea/modules.xml" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" afterPath="$PROJECT_DIR$/.gitignore" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/clion-log.txt" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/clion-log.txt" />
-      <change beforePath="$PROJECT_DIR$/day25_parser/src/lib.rs" afterPath="$PROJECT_DIR$/day25_parser/src/lib.rs" />
-      <change beforePath="$PROJECT_DIR$/src/day25.rs" afterPath="$PROJECT_DIR$/src/day25.rs" />
-      <change beforePath="$PROJECT_DIR$/src/main.rs" afterPath="$PROJECT_DIR$/src/main.rs" />
-      <change beforePath="$PROJECT_DIR$/tests/day25.rs" afterPath="$PROJECT_DIR$/tests/day25.rs" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/clion-log.txt" afterPath="" />
     </list>
     <ignored path="$PROJECT_DIR$/cmake-build-debug/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -53,11 +49,31 @@
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="lib.rs" pinned="false" current-in-tab="true">
+          <file leaf-file-name="lib.rs" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/day25_parser/src/lib.rs">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="221">
-                  <caret line="23" column="23" lean-forward="true" selection-start-line="23" selection-start-column="23" selection-end-line="23" selection-end-column="23" />
+                <state relative-caret-position="153">
+                  <caret line="9" column="27" lean-forward="false" selection-start-line="9" selection-start-column="27" selection-end-line="9" selection-end-column="27" />
+                  <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="lib.rs" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/day16_parser/src/lib.rs">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="90">
+                  <caret line="10" column="0" lean-forward="false" selection-start-line="10" selection-start-column="0" selection-end-line="10" selection-end-column="0" />
+                  <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name=".gitignore" pinned="false" current-in-tab="true">
+            <entry file="file://$PROJECT_DIR$/.gitignore">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="68">
+                  <caret line="4" column="19" lean-forward="true" selection-start-line="4" selection-start-column="19" selection-end-line="4" selection-end-column="19" />
                   <folding />
                 </state>
               </provider>
@@ -70,8 +86,8 @@
           <file leaf-file-name="day25.rs" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/tests/day25.rs">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="257">
-                  <caret line="18" column="0" lean-forward="false" selection-start-line="18" selection-start-column="0" selection-end-line="18" selection-end-column="0" />
+                <state relative-caret-position="952">
+                  <caret line="56" column="45" lean-forward="false" selection-start-line="56" selection-start-column="45" selection-end-line="56" selection-end-column="45" />
                   <folding>
                     <element signature="e#2323#2324#0" expanded="true" />
                     <element signature="e#2369#2370#0" expanded="true" />
@@ -125,6 +141,7 @@
         <option value="$PROJECT_DIR$/src/day25.rs" />
         <option value="$PROJECT_DIR$/src/main.rs" />
         <option value="$PROJECT_DIR$/day25_parser/src/lib.rs" />
+        <option value="$PROJECT_DIR$/.gitignore" />
       </list>
     </option>
   </component>
@@ -182,12 +199,12 @@
             <path>
               <item name="advent_of_code_2017" type="dad4c3:CidrFilesViewHelper$MyProjectTreeStructure$1" />
               <item name="advent_of_code_2017" type="462c0819:PsiDirectoryNode" />
-              <item name="day25_parser" type="462c0819:PsiDirectoryNode" />
+              <item name="day16_parser" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="advent_of_code_2017" type="dad4c3:CidrFilesViewHelper$MyProjectTreeStructure$1" />
               <item name="advent_of_code_2017" type="462c0819:PsiDirectoryNode" />
-              <item name="day25_parser" type="462c0819:PsiDirectoryNode" />
+              <item name="day16_parser" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
@@ -383,12 +400,12 @@
       <workItem from="1515015892433" duration="2095000" />
       <workItem from="1515067968127" duration="1753000" />
       <workItem from="1515069731007" duration="11110000" />
-      <workItem from="1515100111183" duration="2198000" />
+      <workItem from="1515100111183" duration="2399000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="62152000" />
+    <option name="totallyTimeSpent" value="62353000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="1680" y="0" width="1920" height="1080" extended-state="6" />
@@ -428,13 +445,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/day3.rs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/CMakeLists.txt" />
     <entry file="file://$PROJECT_DIR$/src/day3.rs">
       <provider selected="true" editor-type-id="text-editor">
@@ -536,13 +546,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/day16_parser/src/lib.rs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="306">
-          <caret line="18" column="12" lean-forward="false" selection-start-line="18" selection-start-column="12" selection-end-line="18" selection-end-column="12" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/day23_parser/src/lib.rs">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="323">
@@ -592,8 +595,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/tests/day25.rs">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="257">
-          <caret line="18" column="0" lean-forward="false" selection-start-line="18" selection-start-column="0" selection-end-line="18" selection-end-column="0" />
+        <state relative-caret-position="952">
+          <caret line="56" column="45" lean-forward="false" selection-start-line="56" selection-start-column="45" selection-end-line="56" selection-end-column="45" />
           <folding>
             <element signature="e#2323#2324#0" expanded="true" />
             <element signature="e#2369#2370#0" expanded="true" />
@@ -603,8 +606,24 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/day25_parser/src/lib.rs">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="221">
-          <caret line="23" column="23" lean-forward="true" selection-start-line="23" selection-start-column="23" selection-end-line="23" selection-end-column="23" />
+        <state relative-caret-position="153">
+          <caret line="9" column="27" lean-forward="false" selection-start-line="9" selection-start-column="27" selection-end-line="9" selection-end-column="27" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/day16_parser/src/lib.rs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="90">
+          <caret line="10" column="0" lean-forward="false" selection-start-line="10" selection-start-column="0" selection-end-line="10" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.gitignore">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="68">
+          <caret line="4" column="19" lean-forward="true" selection-start-line="4" selection-start-column="19" selection-end-line="4" selection-end-column="19" />
           <folding />
         </state>
       </provider>
