@@ -7,6 +7,7 @@ dependencies = [
  "day18_parser 1.0.0",
  "day20_parser 1.0.0",
  "day23_parser 1.0.0",
+ "day25_parser 1.0.0",
  "day7_parser 1.0.0",
  "day8_parser 1.0.0",
  "day9_parser 1.0.0",
@@ -60,6 +61,13 @@ dependencies = [
 
 [[package]]
 name = "day23_parser"
+version = "1.0.0"
+dependencies = [
+ "nom 3.2.1 (registry+https://github.com/rust-lang/crates.io-index)",
+]
+
+[[package]]
+name = "day25_parser"
 version = "1.0.0"
 dependencies = [
  "nom 3.2.1 (registry+https://github.com/rust-lang/crates.io-index)",

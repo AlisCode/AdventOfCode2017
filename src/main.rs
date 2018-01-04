@@ -1,4 +1,5 @@
 extern crate advent_of_code_2017;
 
-fn main() {}
+//use self::advent_of_code_2017::day25::resolve_part_one;
 
+fn main() {}

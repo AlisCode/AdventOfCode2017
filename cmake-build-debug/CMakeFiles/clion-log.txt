@@ -1,1 +1,2 @@
-CMakeLists.txt not found in /home/olivier/Workspace/Rust/advent_of_code_2017
+CMakeLists.txt not found in C:\Users\opinon\Documents\Workspace\AdventOfCode2017
+Environment (MinGW/Cygwin) is not selected Configure

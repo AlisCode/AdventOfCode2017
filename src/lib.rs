@@ -6,6 +6,7 @@ extern crate day16_parser;
 extern crate day18_parser;
 extern crate day20_parser;
 extern crate day23_parser;
+extern crate day25_parser;
 
 extern crate itertools;
 extern crate time;
@@ -34,3 +35,4 @@ pub mod day21;
 pub mod day22;
 pub mod day23;
 pub mod day24;
+pub mod day25;
