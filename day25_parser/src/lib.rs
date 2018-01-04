@@ -3,6 +3,7 @@ extern crate nom;
 
 use nom::{alpha, line_ending, digit};
 use std::str;
+use std::collections::HashMap;
 
 #[derive(Debug)]
 pub struct Action {
@@ -22,7 +23,7 @@ pub struct State {
 pub struct Blueprint {
     pub count_max: u32,
     pub start_state: String,
-    pub states: Vec<State>,
+    pub states: HashMap<String, State>,
 }
 
 impl Action {
@@ -47,10 +48,18 @@ impl State {
 
 impl Blueprint {
     pub fn new(count_max: u32, start_state: &str, states: Vec<State>) -> Self {
+        let mut states_hash: HashMap<String, State> = HashMap::new();
+
+        // Not the cleanest way to do this.
+        // Maybe using a HashSet and impl Hash for State is a better way ?
+        for state in states {
+            states_hash.insert(state.name.clone(), state);
+        }
+
         Blueprint {
             count_max,
             start_state: start_state.into(),
-            states,
+            states: states_hash,
         }
     }
 }

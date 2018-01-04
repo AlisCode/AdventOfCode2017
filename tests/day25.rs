@@ -2,12 +2,9 @@ extern crate day25_parser;
 extern crate advent_of_code_2017;
 
 use day25_parser::{Blueprint, Action, State, get_blueprint};
-use advent_of_code_2017::day25::Tape;
+use advent_of_code_2017::day25::{Tape, resolve_part_one};
 
-#[test]
-pub fn test_day25_parser_blueprint()
-{
-    let input: &str = "Begin in state A.
+const INPUT: &str = "Begin in state A.
 Perform a diagnostic checksum after 6 steps.
 
 In state A:
@@ -30,15 +27,18 @@ In state B:
     - Move one slot to the right.
     - Continue with state A.";
 
+#[test]
+pub fn test_day25_parser_blueprint()
+{
     let string_a: String = "A".into();
     let string_b: String = "B".into();
 
-    let blueprint: Blueprint = get_blueprint(input);
+    let blueprint: Blueprint = get_blueprint(INPUT);
     assert_eq!(blueprint.start_state, string_a);
     assert_eq!(blueprint.count_max, 6);
 
-    let state_a: &State = &blueprint.states[0];
-    let state_b: &State = &blueprint.states[1];
+    let state_a: &State = blueprint.states.get("A").unwrap();
+    let state_b: &State = blueprint.states.get("B").unwrap();
 
     assert_eq!(state_a.name, string_a);
     assert_eq!(state_b.name, string_b);
@@ -75,4 +75,9 @@ pub fn test_day25_tape_checksum() {
     tape.records.insert(2, 1);
 
     assert_eq!(tape.checksum(), 3);
+}
+
+#[test]
+pub fn test_day25_part_one() {
+    assert_eq!(resolve_part_one(INPUT), 3);
 }
